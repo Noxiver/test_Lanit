@@ -48,6 +48,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.11</version>
+    </dependency>
+
+    <dependency>
       <groupId> org.apache.cassandra</groupId>
       <artifactId>cassandra-all</artifactId>
       <version>0.8.1</version>
@@ -62,6 +68,7 @@
           <artifactId>log4j</artifactId>
         </exclusion>
       </exclusions>
+
 
     </dependency>
   </dependencies>

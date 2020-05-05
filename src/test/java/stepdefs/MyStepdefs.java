@@ -8,7 +8,11 @@ import cucumber.api.java.ru.И;
 import cucumber.api.java.ru.Затем;
 import cucumber.api.java.ru.Также;
 import org.openqa.selenium.By;
-
+import static page.AbstractPage.getPageByTitle;
+import static page.AbstractPage.getUrlByTitle;
+import static  test.strings.userMessage;
+import static test.strings.userLogin;
+import static test.strings.userPassword;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
 
@@ -19,74 +23,69 @@ public class MyStepdefs {
         System.out.println("Тест начат");
     }
 
-    @И("Открываем сайт")
-    public void открываемСайт() {
-        open("https://dev.n7lanit.ru/");
+    @И("Открываем страницу {string}")
+    public void открываемСайт(String site) throws ClassNotFoundException, InterruptedException  {
+        open(getUrlByTitle(site));
     }
 
-    @И("Находим кнопку Войти")
-    public void находимКнопкуВойти() {
+    @И("На странице {string} находим кнопку {string}")
+    public void находимКнопкуВойти(String str, String nameEL) throws ClassNotFoundException,InterruptedException {
         System.out.println("Находим кнопку Войти");
-        $(By.xpath("//button[contains(text(), 'Войти')]/..")).should(Condition.visible).click();
+        getPageByTitle(str).getElementByName(nameEL).click();
     }
 
-    @Затем("Проходим авторизацию")
-    public void вводимЛогин() {
+    @Затем("на странице {string} ввести логин {string}")
+    public void вводимЛогин(String str, String login) throws ClassNotFoundException, InterruptedException {
         System.out.println("Проходим авторизацию");
-        $(By.xpath("//div[@class='control-input']/input[@id='id_username']")).val("Noxiver");
-        $(By.xpath("//div[@class='control-input']/input[@id='id_password']")).val("Strekoza").pressEnter();
+        getPageByTitle(str).getElementByName(login).val(userLogin);
+
     }
 
-    @И("Проверяем авторизацию")
-    public void проверяемАвторизацию() {
+    @Также("на странице {string} ввести пароль {string}")
+    public void вводимПароль(String str, String pass) throws ClassNotFoundException, InterruptedException {
+        getPageByTitle(str).getElementByName(pass).val(userPassword).pressEnter();
+    }
+
+
+    @И("на странице {string} проверить наличие иконки {string}")
+    public void проверяемАвторизацию(String str, String icon) throws ClassNotFoundException, InterruptedException {
         System.out.println("Проверяем авторизацию");
-        $(By.xpath("//*[@id=\"user-menu-mount\"]/ul/li[3]/a/img")).should(Condition.visible);
+        getPageByTitle(str).getElementByName(icon).should(Condition.image);
     }
 
-    @Затем("Выбираем случайную тему, не являющуюся опросом")
-    public void выбираемСлучайнуюТему() {
-        System.out.println("Выбираем случайную тему, не являющуюся опросом");
-        open("https://dev.n7lanit.ru/");
-        ElementsCollection collection = $$(By.xpath("//span[@class='thread-detail-replies' and not(preceding-sibling::span)]/ancestor::div[3]/a"));
-        collection.get((int) (collection.size()*Math.random())).click();
+    @Затем("на странице {string} открыть тему {string}")
+    public void выбираемСлучайнуюТему(String str, String page) throws ClassNotFoundException, InterruptedException {
+        Selenide.sleep(9000);
+        getPageByTitle(str).getElementByName(page).should(Condition.visible).click();
     }
 
 
-    @И("Находим кнопку ответить и жмем на неё")
-    public void находимИЖмемКнопкуОтветить() {
-        System.out.println("Находим кнопку ответить и жмем на неё");
-        Selenide.sleep(1000);
-        $(By.xpath("//div[@class='col-sm-4 hidden-xs']/button[@class='btn btn-primary btn-block btn-outline']")).shouldHave(text("Ответить")).click();
+    @И("на странице {string} нажать кнопку ответить {string}")
+    public void находимИЖмемКнопкуОтветить(String str, String answer) throws ClassNotFoundException, InterruptedException {
+        Selenide.sleep(5000);
+        getPageByTitle(str).getElementByName(answer).should(Condition.visible).click();
     }
 
-    @И("Оставлем комментарий")
-    public void оставляемКомментарий() {
-        System.out.println("Оставлем комментарий");
-        $(By.xpath("//textarea[@id='editor-textarea']")).shouldBe(Condition.visible).val("Привет мир!").submit();
+    @И("на странице {string} написать {string} в поле ввода")
+    public void оставляемКомментарий(String str, String text) throws ClassNotFoundException, InterruptedException {
+        getPageByTitle(str).getElementByName(text).val(userMessage).submit();
     }
 
-    @И("Проверяем наличие коментария")
-    public void проверяемНаличиеКомментария() {
-        System.out.println("Проверяем наличие коментария");
-        $(By.xpath("//div[@class='post-body']/article/p[contains(text(),'Привет мир!')]")).isDisplayed();
+    @И("на странице {string} проверить наличие ответа {string}")
+    public void проверяемНаличиеКомментария(String str, String checkAnswer) throws ClassNotFoundException, InterruptedException{
+        getPageByTitle(str).getElementByName(checkAnswer).should(Condition.visible);
     }
 
-    @Затем("Переходим во вкладку Темы")
-    public void переходимВоВкладкуТемы() {
-        System.out.println("Переходим во вкладку Темы");
-        $(By.xpath("//ul[@class='nav navbar-nav']//a[contains(text(),'Темы')]")).shouldBe(visible).click();
+    @Затем("на странице {string} перейти на страницу темы {string}")
+    public void переходимВоВкладкуТемы(String str, String bar) throws ClassNotFoundException, InterruptedException {
+        Selenide.sleep(5000);
+        getPageByTitle(str).getElementByName(bar).should(Condition.visible).click();
     }
 
-    @Также("Повторяем шаги с коментарием")
+    @Также("повторить шаги с коментарием")
     public void повторяемШагиСКоментарием() {
-        System.out.println("Повторяем шаги с коментарием");
-        ElementsCollection collection = $$(By.xpath("//span[@class='thread-detail-replies' and not(preceding-sibling::span)]/ancestor::div[3]/a"));
-        collection.get((int) (collection.size()*Math.random())).click();
-        Selenide.sleep(6000);
-        $(By.xpath("//div[@class='col-sm-4 hidden-xs']/button[@class='btn btn-primary btn-block btn-outline']")).shouldHave(text("Ответить")).click();
-        $(By.xpath("//textarea[@id='editor-textarea']")).shouldBe(Condition.visible).val("Привет мир!").submit();
-        $(By.xpath("//div[@class='post-body']/article/p[contains(text(),'Привет мир!')]")).isDisplayed();
-        $(By.xpath("//ul[@class='nav navbar-nav']//a[contains(text(),'Темы')]")).shouldBe(visible).click();
+
     }
+
 
 }
