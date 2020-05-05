@@ -3,8 +3,8 @@ package page;
 
 import com.codeborne.selenide.SelenideElement;
 import org.reflections.Reflections;
-import pages.annotations.Element;
-import pages.annotations.Page;
+import page.annotations.Element;
+import page.annotations.Page;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

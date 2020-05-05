@@ -4,10 +4,10 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-import pages.annotations.Page;
+import page.annotations.Page;
 
 import static com.codeborne.selenide.Selenide.*;
-import pages.annotations.Element;
+import page.annotations.Element;
 
 
 @Page(title = "Главная страница", url = "https://dev.n7lanit.ru")

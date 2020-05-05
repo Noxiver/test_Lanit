@@ -1,5 +1,4 @@
-package pages.annotations;
-
+package page.annotations;
 
 
 import java.lang.annotation.Retention;
